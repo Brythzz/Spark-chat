@@ -8,8 +8,8 @@ import { createRouter, createWebHistory } from 'vue-router';
 
 
 import App from './pages/App';
-import Home from './pages/Home';
-import Questions from './pages/Questions';
+import Login from './pages/Login';
+import Register from './pages/Register';
 
 
 //////////////////////////////////////////////////
@@ -20,9 +20,10 @@ import Questions from './pages/Questions';
 const router = createRouter({
     history: createWebHistory(),
     routes: [
-        { path: '/', component: Home },
-        { path: '/quiz', component: Questions },
-        { path: '/:pathMatch(.*)*', redirect: '/' }
+        { path: '/', redirect: '/login'},
+        { path: '/login', component: Login },
+        { path: '/register', component: Register },
+        { path: '/:pathMatch(.*)*', redirect: '/login' }
     ]
 });
 

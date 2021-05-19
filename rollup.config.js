@@ -14,7 +14,8 @@ export default {
         file: `public/assets/js/script.js`,
         globals: {
             'vue': 'Vue',
-            'vue-router': 'VueRouter'
+            'vue-router': 'VueRouter',
+            'axios': 'axios'
         }
     },
     plugins: [
@@ -29,6 +30,7 @@ export default {
     ],
     external: [
         'vue',
-        'vue-router'
+        'vue-router',
+        'axios'
     ]
 }

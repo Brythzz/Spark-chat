@@ -1,7 +1,5 @@
 User-agent: *
 Allow: /
-Allow: /quiz
-Allow: /cours
 Disallow: /api/
 
 User-Agent: nsa

@@ -12,6 +12,7 @@
         "rollup-plugin-terser": "^7.0.2"
     },
     "dependencies": {
+        "axios": "^0.21.1",
         "express": "^4.17.1"
     }
 }
