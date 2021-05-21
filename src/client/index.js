@@ -1,5 +1,6 @@
 import { createApp } from 'vue';
 import { createRouter, createWebHistory } from 'vue-router';
+import { get } from 'axios';
 
 
 //////////////////////////////////////////////////
@@ -10,6 +11,7 @@ import { createRouter, createWebHistory } from 'vue-router';
 import App from './pages/App';
 import Login from './pages/Login';
 import Register from './pages/Register';
+import Chat from './pages/Chat';
 
 
 //////////////////////////////////////////////////
@@ -23,8 +25,17 @@ const router = createRouter({
         { path: '/', redirect: '/login'},
         { path: '/login', component: Login },
         { path: '/register', component: Register },
+        { path: '/app', component: Chat },
         { path: '/:pathMatch(.*)*', redirect: '/login' }
     ]
+});
+
+router.beforeEach((to, from, next) => {
+    if (to.path === '/app')
+        get('/api/v1/user')
+            .then(() => next())
+            .catch(() => next({ path: '/login' }));
+    else next();
 });
 
 

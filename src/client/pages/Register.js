@@ -32,11 +32,17 @@ export default {
     },
     methods: {
         getErrorFromHttpStatus(code) {
-            const error = (code === 403)
-                ? 'Cette adresse email n\'est pas whitelistée'
-                : 'Il y\'a eu un problème. Veuillez réessayer plus tard';
+            const errors = Object.freeze({
+                403: 'Cet email n\'est pas whitelisté',
+                409: 'Un compte associé à cet email/identifiant existe déjà'
+            });
 
-            return error;
+            return errors[code] || 'Il y\'a eu un problème. Veuillez réessayer plus tard';
+        },
+
+        validateEmail(email) {
+            const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+            return re.test(String(email).toLowerCase());
         },
 
         register() {
@@ -44,9 +50,10 @@ export default {
             const areAllFieldsCompleted = email && username && password;
 
             if (!areAllFieldsCompleted) return this.err = 'Veuillez remplir tous les champs';
+            if (!this.validateEmail(email)) return this.err = 'Adresse email invalide';
 
             post('/api/v1/register', { email, username, password })
-                .then(() => this.isLoggedIn = true)
+                .then(() => this.$router.push('app'))
                 .catch(req => this.err = this.getErrorFromHttpStatus(req.response.status));
         }
     }
