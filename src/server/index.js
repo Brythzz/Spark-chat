@@ -11,7 +11,7 @@ dotenv.config();
 import mongoose from 'mongoose';
 mongoose.connect(process.env.DB_KEY, { useUnifiedTopology: true, useNewUrlParser: true });
 
-import { validateEmail, generateAuthToken, toLowerCaseString, getRandomColor } from './utils.js';
+import { validateEmail, generateAuthToken, toLowerCaseString, getRandomColor, getJSON } from './utils.js';
 import { User, Whitelist } from './models.js';
 
 
@@ -26,18 +26,6 @@ app.disable('x-powered-by');
 app.use(express.static('public'));
 app.use(express.json());
 app.use(cookieParser());
-
-
-//////////////////////////////////////
-//  WEBSOCKET
-//////////////////////////////////////
-
-
-const wss = new WebSocket.Server({ noServer: true });
-
-wss.on('connection', ws => {
-    ws.on('message', console.log);
-});
 
 
 //////////////////////////////////////
@@ -93,7 +81,11 @@ app.post('/api/v1/login', async (req, res) => {
 app.post('/api/v1/register', async (req, res) => {
 
     //Check if request is valid
-    const isValidRequest = req.body.email && req.body.username && req.body.password;
+    const isValidRequest =
+        typeof req.body.email === 'string'
+        && typeof req.body.username === 'string'
+        && typeof req.body.password === 'string';
+
     if (!isValidRequest || !validateEmail(req.body.email)) return res.sendStatus(400);
 
 
@@ -104,27 +96,29 @@ app.post('/api/v1/register', async (req, res) => {
 
 
     // Check if user already exists
+    const username = req.body.username.substring(32);
+
     const user = await User.findOne({ $or: [
-        { username: String(req.body.username) },
+        { username },
         { email }
     ]});
     if (user) return res.sendStatus(409);
 
 
     // Create user entry in database
-    const hash = bcrypt.hashSync(req.body.password, 12);
+    const password = bcrypt.hashSync(req.body.password, 12);
     const color = getRandomColor();
 
     new User({
         email,
-        username: req.body.username,
-        password: hash,
+        username,
+        password,
         color
     }).save();
 
 
     // Create authenticated session
-    const userObj = { username: req.body.username, color };
+    const userObj = { username, color };
     addAuthenticatedUser(res, userObj);
     res.send(userObj);
 });
@@ -145,8 +139,35 @@ app.get('*', (req, res) => {
 //  WS
 //////////////////////////////////////
 
-wss.on('connection', (socket, req) => {
-    socket.send('Hello!');
+
+const wss = new WebSocket.Server({ noServer: true });
+
+wss.on('connection', (ws, req) => {
+    ws.on('message', (message) => {
+        const data = getJSON(message);
+        if (!data) ws.end();
+
+        switch(data.op) {
+            case 1:
+                if (!data.content) break;
+                const { username, color } = req.user;
+
+                wss.clients.forEach((client) => {
+                    if (client.readyState === WebSocket.OPEN)
+                        client.send(JSON.stringify({
+                            op: 0,
+                            d: {
+                                content: data.content.substring(0, 512),
+                                timestamp: Date.now(),
+                                author: { username, color }
+                            }
+                        }));
+                });
+                break;
+            default:
+                break;
+        }
+    });
 });
 
 
@@ -163,11 +184,14 @@ server.on('upgrade', (req, socket, head) => {
     if (!req.headers.cookie) return res.sendStatus(401);
 
     const cookies = cookie.parse(req.headers.cookie);
+    const user = authTokens[cookies.AuthToken];
+    if (user) {
+        req.user = user;
 
-    if (authTokens[cookies.AuthToken])
         wss.handleUpgrade(req, socket, head, socket => {
             wss.emit('connection', socket, req);
         });
+    }
 
     else socket.end();
 });

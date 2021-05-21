@@ -16,6 +16,7 @@ export default {
             password: ''
         };
     },
+
     render() {
         return (
             <div class="container">
@@ -30,6 +31,7 @@ export default {
             </div>
         );
     },
+
     methods: {
         getErrorFromHttpStatus(code) {
             const errors = Object.freeze({

@@ -23,3 +23,13 @@ export const generateAuthToken = () => {
 export const toLowerCaseString = (str) => {
     return String(str).toLowerCase();
 }
+
+export const getJSON = (str) => {
+    try {
+        const json = JSON.parse(str);
+        return json;
+    }
+    catch {
+        return null;
+    }
+}

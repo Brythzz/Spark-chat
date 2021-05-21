@@ -19,7 +19,7 @@ export default {
         return (
             <div class="container">
                 <form onSubmit={ (event) => { event.preventDefault(); this.login() }}>
-                    <input v-model={ this.username } type="text" placeholder="Identifiant / Email" autocomplete="username" />
+                    <input v-model={ this.username } type="text" placeholder="Identifiant / Email" autocomplete="username" maxlength="32"/>
                     <input v-model={ this.password } type="password" placeholder="Mot de passe" autocomplete="current-password" />
                     {this.err && <p class="error">{ this.err }</p>}
                     <Button content="Se connecter" />
