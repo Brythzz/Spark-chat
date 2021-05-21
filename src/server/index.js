@@ -96,7 +96,7 @@ app.post('/api/v1/register', async (req, res) => {
 
 
     // Check if user already exists
-    const username = req.body.username.substring(32);
+    const username = req.body.username.substring(0, 32);
 
     const user = await User.findOne({ $or: [
         { username },

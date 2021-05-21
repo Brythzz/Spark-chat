@@ -31,7 +31,7 @@ export default {
     },
 
     created() {
-        this.ws = new WebSocket(`ws://${window.location.host}`);
+        this.ws = new WebSocket(`wss://${window.location.host}/ws`);
 
         this.ws.onmessage = (message) => this.messages.push(JSON.parse(message.data).d);
     },
