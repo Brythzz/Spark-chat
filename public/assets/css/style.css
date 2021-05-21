@@ -65,7 +65,7 @@ body {
 
 .messageContainer {
     overflow-y: scroll;
-    height: calc(100% - 44px);
+    height: calc(100% - 2.75rem);
 }
 
 .message {
@@ -136,7 +136,7 @@ button svg {
 }
 
 ::-webkit-scrollbar {
-    width: 10px;
+    width: 0.625rem;
     background-color: transparent;
 }
 
