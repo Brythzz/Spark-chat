@@ -16,7 +16,6 @@ export default {
     },
 
     render() {
-        // TODO: Add input autocomplete and misc properties
         return (
             <div class="container">
                 <form onSubmit={ (event) => { event.preventDefault(); this.login() }}>
