@@ -143,6 +143,9 @@ app.get('*', (req, res) => {
 const wss = new WebSocket.Server({ noServer: true });
 
 wss.on('connection', (ws, req) => {
+
+    ws.send(JSON.stringify({ op: 2, d: 30000 }));
+
     ws.on('message', (message) => {
         const data = getJSON(message);
         if (!data) ws.end();
@@ -164,6 +167,10 @@ wss.on('connection', (ws, req) => {
                         }));
                 });
                 break;
+
+            case 3:
+                ws.send(JSON.stringify({ op: 4 }));
+
             default:
                 break;
         }

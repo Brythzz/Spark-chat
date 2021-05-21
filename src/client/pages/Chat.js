@@ -31,9 +31,25 @@ export default {
     },
 
     created() {
-        this.ws = new WebSocket(`wss://${window.location.host}/ws`);
+        this.ws = new WebSocket(`ws://${window.location.host}/ws`);
 
-        this.ws.onmessage = (message) => this.messages.push(JSON.parse(message.data).d);
+        this.ws.onmessage = (message) => {
+            const data = JSON.parse(message.data);
+            switch(data.op) {
+                case 0:
+                    this.messages.push(data.d);
+                    break;
+
+                case 2:
+                    setInterval(() => {
+                        this.ws.send('{"op":3}');
+                    }, data.d);
+                    break;
+
+                default:
+                    break;
+            }
+        }
     },
 
     updated() {
