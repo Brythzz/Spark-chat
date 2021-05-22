@@ -37,8 +37,9 @@ const authTokens = {};
 
 const addAuthenticatedUser = (res, user) => {
     const authToken = generateAuthToken();
+    const { username, color, admin } = user;
 
-    authTokens[authToken] = { username: user.username, color: user.color};
+    authTokens[authToken] = Object.assign({ username, color }, admin && { admin: true });
     res.cookie('AuthToken', authToken, { httpOnly: true/*, secure: true*/, sameSite: 'strict'});
 }
 
@@ -153,7 +154,7 @@ wss.on('connection', (ws, req) => {
         switch(data.op) {
             case 1:
                 if (!data.content) break;
-                const { username, color } = req.user;
+                const { username, color, admin } = req.user;
 
                 wss.clients.forEach((client) => {
                     if (client.readyState === WebSocket.OPEN)
@@ -162,7 +163,7 @@ wss.on('connection', (ws, req) => {
                             d: {
                                 content: data.content.substring(0, 512),
                                 timestamp: Date.now(),
-                                author: { username, color }
+                                author: Object.assign({ username, color }, admin && { admin: true })
                             }
                         }));
                 });

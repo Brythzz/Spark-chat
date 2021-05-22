@@ -10,7 +10,8 @@ const userSchema = Schema({
     email: String,
     username: String,
     password: String,
-    color: String
+    color: String,
+    admin: Boolean
 });
 
 export const User = model('users', userSchema);
