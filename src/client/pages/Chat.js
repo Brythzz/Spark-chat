@@ -51,6 +51,8 @@ export default {
                     break;
             }
         }
+
+        this.ws.onerror = () => this.$router.push('login');
     },
 
     mounted() {
