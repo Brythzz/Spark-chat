@@ -8,7 +8,8 @@ export default {
     data() {
         return {
             messages: [],
-            message: ''
+            message: '',
+            lastMessage: ''
         };
     },
 
@@ -24,7 +25,7 @@ export default {
                     <div id="bot" ref="bottom"></div>
                 </div>
                 <form onSubmit={(event) => { event.preventDefault(); this.sendMessage() }}>
-                    <input v-model={ this.message } type="text" placeholder="Message..." maxlength="512" />
+                    <input v-model={ this.message } type="text" placeholder="Message..." maxlength="512" ref="messageBar" />
                 </form>
             </div>
         );
@@ -52,6 +53,15 @@ export default {
         }
     },
 
+    mounted() {
+        this.$refs.messageBar.addEventListener('keydown', event => {
+            if (event.keyCode === 38 && !this.message) {
+                event.preventDefault();
+                this.message = this.lastMessage;
+            }
+        });
+    },
+
     updated() {
         this.$refs.bottom.scrollIntoView({ behavior: 'smooth' });
     },
@@ -59,6 +69,7 @@ export default {
     methods: {
         sendMessage() {
             if (!this.message) return;
+            this.lastMessage = this.message;
 
             this.ws.send(JSON.stringify({ op: 1, content: this.message }));
             this.message = '';

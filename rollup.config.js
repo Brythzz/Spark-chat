@@ -15,7 +15,8 @@ export default {
         globals: {
             'vue': 'Vue',
             'vue-router': 'VueRouter',
-            'axios': 'axios'
+            'axios': 'axios',
+            'sanitize-html': 'sanitizeHtml'
         }
     },
     plugins: [
@@ -31,6 +32,7 @@ export default {
     external: [
         'vue',
         'vue-router',
-        'axios'
+        'axios',
+        'sanitize-html'
     ]
 }

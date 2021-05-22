@@ -1,4 +1,4 @@
-import { post, get } from 'axios';
+import { post } from 'axios';
 import Button from '../components/Button';
 
 
