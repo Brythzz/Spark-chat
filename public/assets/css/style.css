@@ -155,7 +155,7 @@ button svg {
     border: 3px solid var(--background-primary);
 }
 
-@media screen and (max-width: 400px) {
+@media screen and (max-width: 800px) {
     .chat {
         max-height: unset;
     }

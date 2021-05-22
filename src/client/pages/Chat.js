@@ -53,6 +53,7 @@ export default {
         }
 
         this.ws.onerror = () => this.$router.push('login');
+        this.ws.onclose = () => this.ws = new WebSocket(`ws://${window.location.host}/ws`);
     },
 
     mounted() {
