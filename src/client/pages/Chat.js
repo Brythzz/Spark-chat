@@ -43,7 +43,9 @@ export default {
 
     created() {
         let heartbeat;
-        this.ws = new WebSocket(`ws://${window.location.host}/ws`);
+        const WebSocketURL = `ws://${window.location.host}/ws`;
+
+        this.ws = new WebSocket(WebSocketURL);
 
         this.ws.onmessage = (message) => {
             const data = JSON.parse(message.data);
@@ -65,7 +67,7 @@ export default {
 
         this.ws.onclose = () => {
             clearInterval(heartbeat);
-            this.ws = new WebSocket(`ws://${window.location.host}/ws`);
+            this.ws = new WebSocket(WebSocketURL);
         }
     },
 

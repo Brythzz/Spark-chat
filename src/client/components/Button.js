@@ -5,6 +5,7 @@
 
 export default {
     props: ['content'],
+
     render({ content }) {
         return (
             <button type="submit">{ content }

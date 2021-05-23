@@ -7,7 +7,7 @@ import Button from '../components/Button';
 //////////////////////////////////////////////////
 
 export default {
-    props: ['setUser'],
+    props: ['user', 'setUser'],
 
     data() {
         return {

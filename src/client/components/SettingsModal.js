@@ -10,7 +10,7 @@ export default {
 
     data() {
         return {
-            userDetails: null
+            userDetails: {}
         }
     },
 
@@ -20,15 +20,13 @@ export default {
                 <div class="backdrop" onClick={ close }></div>
                 <div class="modal">
                     <h3>Email</h3>
-                    <span>{ userDetails.email }</span>
+                    <span>{ userDetails?.email || '' }</span>
 
                     <h3>Nom d'utilisateur</h3>
-                    <span>{ userDetails.username }</span>
+                    <span>{ userDetails?.username || '' }</span>
 
                     <h3>Couleur</h3>
-                    <span>{ userDetails.color }</span><span class="color" style={{ backgroundColor: userDetails.color }}></span>
-
-                    {/* <pre>{ JSON.stringify(userDetails) }</pre> */}
+                    <span>{ userDetails?.color || '' }</span><span class="color" style={{ backgroundColor: userDetails.color }}></span>
 
 
                     <p class="link" onCLick={ this.switchTheme }>Changer de thème</p>
