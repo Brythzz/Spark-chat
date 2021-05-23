@@ -32,6 +32,7 @@ export default {
     },
 
     created() {
+        let interval;
         this.ws = new WebSocket(`ws://${window.location.host}/ws`);
 
         this.ws.onmessage = (message) => {
@@ -42,7 +43,7 @@ export default {
                     break;
 
                 case 2:
-                    setInterval(() => {
+                    interval = setInterval(() => {
                         this.ws.send('{"op":3}');
                     }, data.d);
                     break;
@@ -52,8 +53,10 @@ export default {
             }
         }
 
-        this.ws.onerror = () => this.$router.push('login');
-        this.ws.onclose = () => this.ws = new WebSocket(`ws://${window.location.host}/ws`);
+        this.ws.onclose = () => {
+            clearInterval(interval);
+            this.ws = new WebSocket(`ws://${window.location.host}/ws`);
+        }
     },
 
     mounted() {

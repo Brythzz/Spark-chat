@@ -16,6 +16,13 @@ export const validateEmail = (email) => {
     return re.test(String(email).toLowerCase());
 }
 
+export const validateRequest = (body) => {
+    for (let param of body)
+        if (!typeof (param || null) === 'string') return false;
+
+    return true;
+}
+
 export const generateAuthToken = () => {
     return crypto.randomBytes(30).toString('hex');
 }

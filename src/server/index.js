@@ -11,7 +11,7 @@ dotenv.config();
 import mongoose from 'mongoose';
 mongoose.connect(process.env.DB_KEY, { useUnifiedTopology: true, useNewUrlParser: true });
 
-import { validateEmail, generateAuthToken, toLowerCaseString, getRandomColor, getJSON } from './utils.js';
+import { validateEmail, generateAuthToken, toLowerCaseString, getRandomColor, getJSON, validateRequest } from './utils.js';
 import { User, Whitelist } from './models.js';
 
 
@@ -53,7 +53,7 @@ app.use((req, res, next) => {
 app.post('/api/v1/login', async (req, res) => {
 
     // Check if request is valid
-    const isValidRequest = req.body.username && req.body.password;
+    const isValidRequest = validateRequest([req.body.username, req.body.password]);
     if (!isValidRequest) return res.sendStatus(400);
 
 
@@ -82,11 +82,7 @@ app.post('/api/v1/login', async (req, res) => {
 app.post('/api/v1/register', async (req, res) => {
 
     //Check if request is valid
-    const isValidRequest =
-        typeof req.body.email === 'string'
-        && typeof req.body.username === 'string'
-        && typeof req.body.password === 'string';
-
+    const isValidRequest = validateRequest([req.body.email, req.body.username, req.body.password]);
     if (!isValidRequest || !validateEmail(req.body.email)) return res.sendStatus(400);
 
 
