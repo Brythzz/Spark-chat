@@ -7,6 +7,8 @@ import Button from '../components/Button';
 //////////////////////////////////////////////////
 
 export default {
+    props: ['setUser'],
+
     data() {
         return {
             isLoggedIn: false,
@@ -55,7 +57,10 @@ export default {
             if (!this.validateEmail(email)) return this.err = 'Adresse email invalide';
 
             post('/api/v1/register', { email, username, password })
-                .then(() => this.$router.push('app'))
+                .then((res) => {
+                    this.setUser(res.data);
+                    this.$router.push('app');
+                })
                 .catch(req => this.err = this.getErrorFromHttpStatus(req.response.status));
         }
     }

@@ -37,9 +37,8 @@ const authTokens = {};
 
 const addAuthenticatedUser = (res, user) => {
     const authToken = generateAuthToken();
-    const { username, color, admin } = user;
 
-    authTokens[authToken] = Object.assign({ username, color }, admin && { admin: true });
+    authTokens[authToken] = user;
     res.cookie('AuthToken', authToken, { httpOnly: true/*, secure: true*/, sameSite: 'strict'});
 }
 
@@ -61,7 +60,7 @@ app.post('/api/v1/login', async (req, res) => {
     const user = await User.findOne({ $or: [
         { username: String(req.body.username) },
         { email: toLowerCaseString(req.body.email) }
-    ]});
+    ]}, '-_id -__v');
 
     if (!user) return res.sendStatus(401);
 
@@ -72,10 +71,11 @@ app.post('/api/v1/login', async (req, res) => {
 
 
     // Create authenticated session
-    const { username, color } = user;
+    const { username, email, color, admin } = user;
+    const userObj = Object.assign({ username, email, color }, admin && { admin: true });
 
-    addAuthenticatedUser(res, user);
-    res.send({ username, color });
+    addAuthenticatedUser(res, userObj);
+    res.send(userObj);
 });
 
 
@@ -115,9 +115,17 @@ app.post('/api/v1/register', async (req, res) => {
 
 
     // Create authenticated session
-    const userObj = { username, color };
+    const userObj = { username, color, email };
     addAuthenticatedUser(res, userObj);
     res.send(userObj);
+});
+
+app.post('/api/v1/logout', (req, res) => {
+    if (!req.user) return res.sendStatus(400);
+
+    delete authTokens[req.cookies['AuthToken']];
+    res.clearCookie('AuthToken');
+    res.sendStatus(200);
 });
 
 
@@ -157,7 +165,7 @@ wss.on('connection', (ws, req) => {
                         client.send(JSON.stringify({
                             op: 0,
                             d: {
-                                content: data.content.substring(0, 512),
+                                content: data.content.trim().substring(0, 512),
                                 timestamp: Date.now(),
                                 author: Object.assign({ username, color }, admin && { admin: true })
                             }

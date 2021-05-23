@@ -18,7 +18,7 @@ export const validateEmail = (email) => {
 
 export const validateRequest = (body) => {
     for (let param of body)
-        if (!typeof (param || null) === 'string') return false;
+        if (!(typeof (param || null) === 'string')) return false;
 
     return true;
 }

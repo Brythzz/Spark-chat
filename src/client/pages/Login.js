@@ -7,6 +7,8 @@ import Button from '../components/Button';
 //////////////////////////////////////////////////
 
 export default {
+    props: ['setUser'],
+
     data() {
         return {
             err: null,
@@ -45,7 +47,10 @@ export default {
             if (!areAllFieldsCompleted) return this.err = 'Veuillez remplir tous les champs';
 
             post('/api/v1/login', { username, password })
-                .then(() => this.$router.push('app'))
+                .then((res) => {
+                    this.setUser(res.data);
+                    this.$router.push('app');
+                })
                 .catch(req => this.err = this.getErrorFromHttpStatus(req.response.status));
         }
     }
