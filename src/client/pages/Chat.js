@@ -32,7 +32,7 @@ export default {
     },
 
     created() {
-        let interval;
+        let heartbeat;
         this.ws = new WebSocket(`ws://${window.location.host}/ws`);
 
         this.ws.onmessage = (message) => {
@@ -43,7 +43,7 @@ export default {
                     break;
 
                 case 2:
-                    interval = setInterval(() => {
+                    heartbeat = setInterval(() => {
                         this.ws.send('{"op":3}');
                     }, data.d);
                     break;
@@ -54,7 +54,7 @@ export default {
         }
 
         this.ws.onclose = () => {
-            clearInterval(interval);
+            clearInterval(heartbeat);
             this.ws = new WebSocket(`ws://${window.location.host}/ws`);
         }
     },
