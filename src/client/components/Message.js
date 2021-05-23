@@ -37,7 +37,7 @@ export default {
             const strikethrough = /~~(.*)~~/g;
 
             const content = sanitized
-                .replace(link, '<a src="$1" target="blank" rel="noreferrer noopener">$1</a>')
+                .replace(link, '<a href="$1" target="blank" rel="noreferrer noopener">$1</a>')
                 .replace(bold, '<b>$1<b>')
                 .replace(italics, '<i>$1</i>')
                 .replace(underline, '<u>$1</u>')
