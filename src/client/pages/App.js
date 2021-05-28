@@ -16,8 +16,10 @@ export default {
     },
 
     created() {
-        window.localStorage.getItem('lightmode')
-            && document.getElementsByTagName('body')[0].classList.add('spark')
+        const themes = ['', 'sand', 'nord', 'gruvbox', 'lightsout'];
+
+        const currentTheme = +window.localStorage.getItem('theme') || 0;
+        document.getElementsByTagName('body')[0].className = themes[currentTheme];
     },
 
     methods: {

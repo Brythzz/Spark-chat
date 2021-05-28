@@ -12,6 +12,7 @@ import App from './pages/App';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Chat from './pages/Chat';
+import AdminPanel from './pages/AdminPanel';
 
 
 //////////////////////////////////////////////////
@@ -26,6 +27,7 @@ const router = createRouter({
         { path: '/login', component: Login },
         { path: '/register', component: Register },
         { path: '/app', component: Chat },
+        { path: '/admin', component: AdminPanel },
         { path: '/:pathMatch(.*)*', redirect: '/login' }
     ]
 });
@@ -35,6 +37,12 @@ router.beforeEach((to, from, next) => {
         get('/api/v1/user')
             .then(() => next())
             .catch(() => next({ path: '/login' }));
+
+    else if (to.path === '/admin')
+        get('/api/v1/user')
+            .then(res => res.data.admin ? next() : next({ path: '/login' }))
+            .catch(() => next({ path: '/login' }));
+
     else next();
 });
 

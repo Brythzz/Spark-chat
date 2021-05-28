@@ -18,11 +18,41 @@
     --font-family: 'Jetbrains Mono', Consolas, 'Courier New', Courier, monospace;
 }
 
-.spark {
-    --background-primary: #cdcdcd;
-    --text-primary: #292929;
-    --text-secondary: #3a3a3a;
-    --accent: #171717;
+.sand {
+    --background-primary: #282828;
+    --text-primary: #ebdbb2;
+    --text-secondary: #5d5d5d;
+    --accent: #fff;
+
+    --text-link: #458588;
+    --text-danger: #ff5757;
+}
+
+.nord {
+    --background-primary: #2f3440;
+    --text-primary: #d8dee9;
+    --text-secondary: #4c566a;
+    --accent: #fff;
+
+    --text-link: #88c0d0;
+    --text-danger: #bf616a;
+}
+
+.gruvbox {
+    --background-primary: #fbf1c7;
+    --text-primary: #3c3836;
+    --text-secondary: #928374;
+    --accent: #7c6f64;
+
+    --text-link: #076678;
+    --text-danger: #cc241d;
+}
+
+.lightsout {
+    --background-primary: #000;
+    --text-primary: #fff;
+    --text-secondary: #fff;
+    --accent: #fff;
 
     --text-link: #167dff;
     --text-danger: #ff3d3d;
@@ -60,8 +90,6 @@ body {
     box-sizing: border-box;
     width: 100%;
     height: 100%;
-    /* max-width: 50rem;
-    max-height: 31.25rem; */
     border: 0.125rem solid var(--accent);
     text-align: left;
 }
@@ -233,12 +261,14 @@ button svg {
     margin-top: 2rem;
 }
 
-.modal p {
+.modal p, .modal a {
+    display: block;
     color: var(--text-link);
     padding: 0.625rem;
     margin: 0 auto;
     cursor: pointer;
     text-align: center;
+    text-decoration: none;
 }
 
 .color {
@@ -253,6 +283,30 @@ button svg {
     color: var(--text-danger)!important;
 }
 
+.admin {
+    overflow-x: scroll;
+    overflow-wrap: break-word;
+    padding: 1.25rem;
+}
+
+.admin > p {
+    display: inline;
+    color: var(--text-link);
+    margin-right: 1rem;
+    text-decoration: underline;
+    margin-bottom: 0.625rem;
+    cursor: pointer;
+}
+
+.user p {
+    margin-bottom: 1.25rem;
+    display: inline-block;
+}
+
+.user p:nth-child(2) {
+    margin-left: 0.5rem;
+    color: var(--text-secondary);
+}
 
 ::-webkit-scrollbar {
     width: 0.625rem;

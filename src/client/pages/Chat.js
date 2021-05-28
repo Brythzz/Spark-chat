@@ -43,7 +43,7 @@ export default {
 
     created() {
         let heartbeat;
-        const WebSocketURL = `ws://${window.location.host}/ws`;
+        const WebSocketURL = `wss://${window.location.host}/ws`;
 
         this.ws = new WebSocket(WebSocketURL);
 

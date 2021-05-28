@@ -49,6 +49,7 @@ app.use((req, res, next) => {
     next();
 });
 
+
 app.post('/api/v1/login', async (req, res) => {
 
     // Check if request is valid
@@ -120,6 +121,7 @@ app.post('/api/v1/register', async (req, res) => {
     res.send(userObj);
 });
 
+
 app.post('/api/v1/logout', (req, res) => {
     if (!req.user) return res.sendStatus(400);
 
@@ -132,6 +134,12 @@ app.post('/api/v1/logout', (req, res) => {
 app.get('/api/v1/user', (req, res) => {
     if (req.user) res.send(req.user);
     else res.sendStatus(401);
+});
+
+
+app.get('/api/v1/all', (req, res) => {
+    if (req.user?.admin) res.send(Object.values(authTokens));
+    else res.sendStatus(403);
 });
 
 

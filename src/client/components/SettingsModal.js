@@ -30,6 +30,7 @@ export default {
 
 
                     <p class="link" onCLick={ this.switchTheme }>Changer de thème</p>
+                    { userDetails?.admin && <router-link to="/admin">Admin panel</router-link> }
                     <p class="logout" onclick={ this.logout }>Se déconnecter</p>
                 </div>
             </div>
@@ -55,10 +56,13 @@ export default {
         },
 
         switchTheme() {
-            document.getElementsByTagName('body')[0].classList.toggle('spark');
+            const themes = ['', 'sand', 'nord', 'gruvbox', 'lightsout'];
 
-            const isLightmode = window.localStorage.getItem('lightmode');
-            window.localStorage.setItem('lightmode', isLightmode ? '' : 'true');
+            let currentTheme = +window.localStorage.getItem('theme') || 0;
+            currentTheme = (themes.length > currentTheme+1) ? currentTheme+1 : 0;
+
+            window.localStorage.setItem('theme', currentTheme);
+            document.getElementsByTagName('body')[0].className = themes[currentTheme];
         }
     }
 }
