@@ -155,9 +155,10 @@ button svg {
 }
 
 .placeholder {
-    color: var(--text-secondary);
     position: absolute;
     margin: .75rem .9375rem ;
+    color: var(--text-secondary);
+    pointer-events: none;
 }
 
 .messageContainer {
