@@ -12,6 +12,7 @@ export default {
         return {
             message: '',
             lastMessage: '',
+            temp_event: ''
         };
     },
 
@@ -30,7 +31,9 @@ export default {
         const bar = this.$refs.messageBar;
 
         bar.addEventListener('keydown', event => {
-            if (event.code === 'Enter' && !event.shiftKey) {
+            this.temp_event = event.key;
+
+            if (event.key === 'Enter' && !event.shiftKey) {
                 event.preventDefault();
 
                 if (!/\S/.test(this.message)) return;
@@ -38,7 +41,7 @@ export default {
                 this.sendMessage(this.message);
                 bar.innerText = '';
             }
-            else if (event.code === 'ArrowUp' && !this.message) {
+            else if (event.key === 'ArrowUp' && !this.message) {
                 event.preventDefault();
                 this.message = this.lastMessage;
                 bar.innerText = this.lastMessage;
