@@ -50,7 +50,6 @@ export default {
     methods: {
         setMessage(event) {
             this.message = event.target.innerText;
-            console.log(this.message);
         },
 
         sendMessage() {

@@ -159,6 +159,7 @@ button svg {
     margin: .75rem .9375rem ;
     color: var(--text-secondary);
     pointer-events: none;
+    user-select: none;
 }
 
 .messageContainer {
